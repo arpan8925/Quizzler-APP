@@ -1,6 +1,16 @@
+from tkinter import *
 THEME_COLOR = "#375362"
 
-class App_Ui:
+class AppUi:
 
     def __init__(self):
-        pass
+        self.window = Tk()
+        self.window.title("Quizzler")
+
+
+
+
+
+
+
+        self.window.mainloop()
