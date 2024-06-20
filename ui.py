@@ -20,10 +20,10 @@ class AppUi:
         self.true_img = PhotoImage(file="images/true.png")
         self.false_img = PhotoImage(file="images/false.png")
 
-        self.true_btn = Button(image=self.true_img, highlightthickness=0)
+        self.true_btn = Button(image=self.true_img, highlightthickness=0, command=self.true_ans)
         self.true_btn.grid(row=2, column=0, padx=20, pady=20)
 
-        self.false_btn = Button(image=self.false_img, highlightthickness=0)
+        self.false_btn = Button(image=self.false_img, highlightthickness=0, command=self.false_ans)
         self.false_btn.grid(row=2, column=1, padx=20, pady=20)
 
         self.next_ques()
@@ -33,3 +33,12 @@ class AppUi:
     def next_ques(self):
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question, text=q_text)
+        self.scoretitle.config(text=f"Score: {self.quiz.score}")
+        
+    def true_ans(self):
+        self.quiz.check_answer("True")
+        self.next_ques()
+                
+    def false_ans(self):
+        self.quiz.check_answer("False")
+        self.next_ques()
