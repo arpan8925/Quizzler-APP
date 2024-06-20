@@ -31,17 +31,27 @@ class AppUi:
         self.window.mainloop()
 
     def next_ques(self):
-        if not self.quiz.still_has_questions():
-            self.canvas.itemconfig(self.question, text=f"Hurray ! Question END.\n Final Score: {self.quiz.score}/{self.quiz.question_number}")
-        
+        self.canvas.config(bg="white")
+
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question, text=q_text)
         self.scoretitle.config(text=f"Score: {self.quiz.score}")
         
     def true_ans(self):
-        self.quiz.check_answer("True")
-        self.next_ques()
+        self.give_fedback(self.quiz.check_answer("True"))
                 
     def false_ans(self):
-        self.quiz.check_answer("False")
-        self.next_ques()
+        is_right = self.quiz.check_answer("False")
+        self.give_fedback(is_right)
+          
+
+    def give_fedback(self, is_right):
+        if is_right:
+            self.canvas.config(bg="green")
+            print("right")
+        else:
+            self.canvas.config(bg="red")
+            print("Wrong")
+        self.window.after(1000, self.next_ques)
+
+
