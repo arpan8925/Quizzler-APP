@@ -1,5 +1,7 @@
 from tkinter import *
 from quiz_brain import QuizBrain
+from PIL import Image, ImageTk, ImageSequence
+
 THEME_COLOR = "#375362"
 
 class AppUi:
@@ -33,9 +35,12 @@ class AppUi:
     def next_ques(self):
         self.canvas.config(bg="white")
 
-        q_text = self.quiz.next_question()
-        self.canvas.itemconfig(self.question, text=q_text)
-        self.scoretitle.config(text=f"Score: {self.quiz.score}")
+        if self.quiz.still_has_questions():
+            q_text = self.quiz.next_question()
+            self.canvas.itemconfig(self.question, text=q_text)
+            self.scoretitle.config(text=f"Score: {self.quiz.score}")
+        else:
+            self.quiz_complete()
         
     def true_ans(self):
         self.give_fedback(self.quiz.check_answer("True"))
@@ -54,4 +59,18 @@ class AppUi:
             print("Wrong")
         self.window.after(1000, self.next_ques)
 
+    def quiz_complete(self):
+        # Hide the buttons
+        self.true_btn.grid_remove()
+        self.false_btn.grid_remove()
+        
+        # Animate canvas enlargement
+        self.enlarge_canvas(250)
 
+    def enlarge_canvas(self, current_height):
+        if current_height < 350:
+            new_height = current_height + 10
+            self.canvas.config(height=new_height)
+            self.window.after(50, self.enlarge_canvas, new_height)
+        else:
+            self.canvas.itemconfig(self.question, text=f"Hurray! Quiz Complete\nYour Total Score is: {self.quiz.score}/{self.quiz.question_number}")
